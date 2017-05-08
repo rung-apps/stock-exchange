@@ -1,0 +1,19 @@
+{
+  "name": "stock-exchange",
+  "version": "0.1.0",
+  "description": "Seja avisado sobre o preço de ações da bolsa. A atualização é feita uma vez por hora",
+  "license": "MIT",
+  "main": "index.js",
+  "category": "miscellaneous",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "ramda": "^0.23.0",
+    "rung-sdk": "^1.0.7",
+    "superagent": "^3.5.2",
+    "superagent-promise": "^1.1.0"
+  },
+  "rung": {
+    "title": "Bolsa de valores",
+    "preview": "BVMF:ABEV3 no valor de R$18.99 (▼ -0.21%) em 5 de Maio de 2017 às 14:04"
+  }
+}
