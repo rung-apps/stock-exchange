@@ -2,9 +2,9 @@
 
 
 
-[![Deploy to Rung](https://i.imgur.com/uijt57R.png)](https://app.rung.com.br/integrations/stock-exchange/customize)
+[![Deploy to Rung](https://i.imgur.com/uijt57R.png)](https://app.rung.com.br/integration/stock-exchange/customize)
 
-![rung-cli 0.2.7](https://img.shields.io/badge/rung--cli-0.2.7-blue.svg?style=flat-square)
+![rung-cli 0.2.8](https://img.shields.io/badge/rung--cli-0.2.8-blue.svg?style=flat-square)
 ![stock-exchange 0.1.0](https://img.shields.io/badge/stock--exchange-0.1.0-green.svg?style=flat-square)
 
 Seja avisado sobre o preço de ações da bolsa. A atualização é feita uma vez por hora
