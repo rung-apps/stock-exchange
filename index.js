@@ -1,5 +1,5 @@
 import { create } from 'rung-sdk';
-import { Char, Money, OneOf } from 'rung-sdk/dist/types';
+import { Char, Double, OneOf } from 'rung-sdk/dist/types';
 import Bluebird from 'bluebird';
 import agent from 'superagent';
 import promisifyAgent from 'superagent-promise';
@@ -11,14 +11,14 @@ import {
     equals,
     gt,
     head,
+    indexOf,
     join,
     lt,
+    merge,
     pipe,
     propSatisfies,
-    merge
+    take
 } from 'ramda';
-
-moment.locale('pt_BR');
 
 const request = promisifyAgent(agent, Bluebird);
 
@@ -28,6 +28,8 @@ const toJSON = pipe(
     JSON.parse,
     head
 );
+
+const formatPrice = num => num.toFixed(2).replace('.', ',');
 
 const styles = {
     ticker: {
@@ -59,23 +61,24 @@ const renderDate = dateString => moment.utc(dateString).format('DD/MM/YYYY HH:mm
 
 function renderAlert({ id, t, e, l_cur, lt_dts, cp_fix }, didIncrease) {
     const date = renderDate(lt_dts);
-    const greenArrow = 'http://www.jfv-vorderpfalz.de/inc/images/won.gif';
-    const redArrow = 'http://www.jfv-vorderpfalz.de/inc/images/lost.gif';
-    const arrow = didIncrease ? '▲' : '▼';
+    const greenArrow = 'https://i.imgur.com/8kAPLVD.png';
+    const redArrow = 'https://i.imgur.com/Occsxtu.png';
+    const arrow = didIncrease ? '?' : '?';
     const color = didIncrease ? '#4CAF50' : '#FF5722';
 
     return { [id]: {
         title: `${e}: ${t} ${_('in the amount of')} ${l_cur} (${arrow} ${cp_fix}%) ${_('in')} ${date}`,
-        content: getContent(t, date, l_cur, arrow, cp_fix, color),
-        comment:
-            `#### ${e}: ${t} por ${l_cur}
+        content: render(t, date, l_cur, arrow, cp_fix, color),
+        comment: cp_fix === '0.00'
+            ? undefined
+            : `#### ${e}: ${t} por ${l_cur}
             <img src="${didIncrease ? greenArrow : redArrow}" style="width: 16px !important" /> ${cp_fix}%
 
             ${_('Extracted in')} ${date}`
     } };
 }
 
-function getContent(ticker, date, value, arrow, difference, color) {
+function render(ticker, date, value, arrow, difference, color) {
     const price = parseFloat(value.replace(/^\D+/g, ''));
     const currency = value.replace(/[0-9.]/g, '');
     const howMuchDiffer = Math.abs(price / 100 * difference);
@@ -89,7 +92,7 @@ function getContent(ticker, date, value, arrow, difference, color) {
                         { currency }
                     </p>
                     <p style={ merge(styles.noMargin, styles.price) }>
-                        { price }
+                        { formatPrice(price) }
                     </p>
                 </li>
                 <li style={ merge(styles.li, { fontSize: '17px', color }) }>
@@ -101,11 +104,13 @@ function getContent(ticker, date, value, arrow, difference, color) {
 }
 
 function main(context, done) {
+    moment.locale(context.locale);
     const { ticker, comparator, pricing } = context.params;
     const compare = comparator === 'maior' ? gt : lt;
+    const code = take(indexOf(' -', ticker), ticker);
 
-    return request.get('http://finance.google.com/finance/info')
-        .query({ q: ticker })
+    return request.get('https://finance.google.com/finance/info')
+        .query({ q: code })
         .then(({ text }) => {
             const json = toJSON(text);
             const isMatch = propSatisfies(pipe(parseFloat, compare(__, pricing)), 'l');
@@ -131,10 +136,16 @@ const params = {
         default: 'menor'
     },
     pricing: {
-        type: Money,
+        type: Double,
         description: _('Price in R$ to compare'),
         default: 20
     }
 };
 
-export default create(main, { params, primaryKey: true });
+export default create(main, {
+    params,
+    primaryKey: true,
+    title: _('Stock exchange'),
+    description: _('Be advised about the stock price of the stock. The update is done once per hour'),
+    preview: render('TOTS3', '06/06/2017 17:09', 'R$29.07', '?', 0.02, '#4CAF50')
+});
