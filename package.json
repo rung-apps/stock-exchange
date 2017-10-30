@@ -1,9 +1,7 @@
 {
   "name": "stock-exchange",
-  "version": "0.1.4",
-  "description": "Be advised about the stock price of the stock. The update is done once per hour",
+  "version": "0.1.14",
   "license": "MIT",
-  "main": "index.js",
   "category": "miscellaneous",
   "dependencies": {
     "bluebird": "^3.5.0",
@@ -13,11 +11,7 @@
     "superagent": "^3.5.2",
     "superagent-promise": "^1.1.0"
   },
-  "rung": {
-    "title": "Bolsa de valores",
-    "preview": "<div><p style=\"font-weight:bold;margin:4px 0px\">PETR4</p><p style=\"margin:0px\">26/05/2017 16:44</p><ul style=\"list-style:none;padding:0px\"><li style=\"float:left;width:68px\"><p style=\"margin:0px;font-size:13px;margin-top:5px\">R$</p><p style=\"margin:0px;font-size:19px;font-weight:bold\">13.6</p></li><li style=\"float:left;width:68px;font-size:17px;color:#FF5722\">▼ 0.14 (1.02%)</li></ul></div>"
-  },
   "devDependencies": {
-    "rung-cli": "^0.4.3"
+    "rung-cli": "^0.7.4"
   }
 }
