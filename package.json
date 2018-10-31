@@ -1,10 +1,27 @@
 {
   "name": "stock-exchange",
-  "version": "0.4.2",
+  "version": "0.4.4",
   "license": "MIT",
-  "category": "miscellaneous",
+  "categories": [
+    "personal",
+    "enterprises",
+    "investors",
+    "miscellaneous"
+  ],
+  "keywords": [
+    "stock exchange",
+    "bolsa de valores",
+    "ticker",
+    "buy",
+    "compra",
+    "sell",
+    "venda",
+    "trader"
+  ],
   "dependencies": {
     "bluebird": "^3.5.0",
+    "chai": "4.1.2",
+    "chai-json-schema": "1.5.0",
     "moment": "^2.18.1",
     "ramda": "^0.25.0",
     "rung-sdk": "^1.0.7",
@@ -12,6 +29,6 @@
     "superagent-promise": "^1.1.0"
   },
   "devDependencies": {
-    "rung-cli": "^1.3.1"
+    "rung-cli": "latest"
   }
 }
